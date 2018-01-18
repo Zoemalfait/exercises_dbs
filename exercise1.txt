@@ -1,0 +1,28 @@
+[guest@howest ~]$ mkdir exercises_dbs
+[guest@howest ~]$ cd exercises_dbs/
+[guest@howest exercises_dbs]$ git init
+Initialized empty Git repository in /home/guest/exercises_dbs/.git/
+[guest@howest exercises_dbs]$ ls
+[guest@howest exercises_dbs]$ ls -a
+.  ..  .git
+[guest@howest exercises_dbs]$ git remote add origin https://github.com/Zoemalfait/exercises_dbs.git
+[guest@howest exercises_dbs]$ touch testfile
+[guest@howest exercises_dbs]$ git add testfile 
+[guest@howest exercises_dbs]$ git commit -m testcommit
+[master (root-commit) 9231efa] testcommit
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 testfile
+[guest@howest exercises_dbs]$ git push -u origin master
+Username for 'https://github.com': Zoemalfait
+Password for 'https://Zoemalfait@github.com': 
+Counting objects: 3, done.
+Writing objects: 100% (3/3), 203 bytes | 203.00 KiB/s, done.
+Total 3 (delta 0), reused 0 (delta 0)
+To https://github.com/Zoemalfait/exercises_dbs.git
+ * [new branch]      master -> master
+Branch master set up to track remote branch master from origin.
+[guest@howest exercises_dbs]$ ls
+testfile
+[guest@howest exercises_dbs]$ rm testfile 
+[guest@howest exercises_dbs]$ touch exercise1.txt
+
