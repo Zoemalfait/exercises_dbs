@@ -29,3 +29,213 @@ Bye
 [guest@howest exercises_dbs]$ mysql college < college.sql 
 [guest@howest exercises_dbs]$ mysql
 mysql> GRANT all on college.* TO guest@localhost;
+mysql>use college;
+
+----------------------------------------------------------------------------------------------------
+
+SELECT CONCAT(stdFirstName," ",stdLastName) as Name, stdCity, stdGPA FROM student WHERE stdGPA >= 3.7;
++------------------+---------+--------+
+| Name             | stdCity | stdGPA |
++------------------+---------+--------+
+| CRISTOPHER COLAN | SEATTLE |   4.00 |
+| WILLIAM PILGRIM  | BOTHELL |   3.80 |
++------------------+---------+--------+
+2 rows in set (0.00 sec)
+
+------------------------------------------------------------------------------------------------------------
+
+SELECT CONCAT(FacFirstName," ",FacLastname) as Name, FacHireDate FROM faculty WHERE FacHireDate LIKE "1999-%" OR FacHireDate LIKE "2000-%";
++------------------+-------------+
+| Name             | FacHireDate |
++------------------+-------------+
+| CRISTOPHER COLAN | 1999-03-01  |
+| JULIA MILLS      | 2000-03-15  |
++------------------+-------------+
+2 rows in set, 2 warnings (0.00 sec)
+
+------------------------------------------------------------------------------------------------------------------------
+
+SELECT OfferNo, CourseNo, FacSSN FROM offering WHERE (OffTerm="FALL" AND OffYear="2005") OR (OffTerm="WINTER" AND OffYear="2006");
++---------+----------+-------------+
+| OfferNo | CourseNo | FacSSN      |
++---------+----------+-------------+
+|    1234 | IS320    | 098-76-5432 |
+|    4321 | IS320    | 098-76-5432 |
+|    4444 | IS320    | 543-21-0987 |
+|    5555 | FIN300   | 765-43-2109 |
+|    5678 | IS480    | 987-65-4321 |
+|    6666 | FIN450   | 987-65-4321 |
++---------+----------+-------------+
+6 rows in set (0.00 sec)
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+SELECT OfferNo, offering.CourseNo, OffDays, OffTime FROM offering JOIN course ON course.CourseNo=offering.CourseNo WHERE (crsDesc LIKE "%DATABASE%" OR crsDesc LIKE "%PROGRAMMING%") AND OffTerm="SPRING" AND OffYear="2006";
++---------+----------+---------+----------+
+| OfferNo | CourseNo | OffDays | OffTime  |
++---------+----------+---------+----------+
+|    3333 | IS320    | MW      | 08:30:00 |
+|    5679 | IS480    | TTH     | 15:30:00 |
++---------+----------+---------+----------+
+2 rows in set (0.00 sec)
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------
+
+SELECT OfferNo, CourseNo, CONCAT(FacFirstName," ",FacLastName) as name FROM offering JOIN faculty ON faculty.FacSSN=offering.FacSSN WHERE FacRank="ASST" AND CourseNo LIKE "IS%" AND offTerm="FALL" AND OffYear="2005";
++---------+----------+---------------+
+| OfferNo | CourseNo | name          |
++---------+----------+---------------+
+|    1234 | IS320    | LEONARD VINCE |
+|    4321 | IS320    | LEONARD VINCE |
++---------+----------+---------------+
+2 rows in set (0.00 sec)
+
+---------------------------------------------------------------------------------------------------------------------------------
+
+SELECT stdMajor, avg(stdGPA) as avgGPA FROM student GROUP BY stdMajor;
++----------+----------+
+| stdMajor | avgGPA   |
++----------+----------+
+| ACCT     | 3.400000 |
+| FIN      | 2.800000 |
+| IS       | 3.233333 |
++----------+----------+
+3 rows in set (0.00 sec)
+
+--------------------------------------------------------------------------------------------------------------------------------
+
+SELECT OffYear, count(OfferNo) as Offers, count(distinct CourseNo) as Courses FROM offering GROUP BY OffYear;
++---------+--------+---------+
+| OffYear | Offers | Courses |
++---------+--------+---------+
+|    2005 |      3 |       2 |
+|    2006 |     10 |       6 |
++---------+--------+---------+
+2 rows in set (0.00 sec)
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+SELECT stdMajor, avg(stdGPA) as avgGPA FROM student WHERE stdClass="JR" OR stdClass="SR" GROUP BY stdMajor HAVING avgGPA > 3.1;
++----------+----------+
+| stdMajor | avgGPA   |
++----------+----------+
+| ACCT     | 3.500000 |
+| IS       | 3.150000 |
++----------+----------+
+2 rows in set (0.00 sec)
+
+-------------------------------------------------------------------------------------------------------------------------------------
+
+SELECT stdMajor, stdClass, min(stdGPA) as minGPA, max(stdGPA) as maxGPA FROM student GROUP BY stdMajor, stdClass;
++----------+----------+--------+--------+
+| stdMajor | stdClass | minGPA | maxGPA |
++----------+----------+--------+--------+
+| ACCT     | JR       |   3.50 |   3.50 |
+| ACCT     | SO       |   3.30 |   3.30 |
+| FIN      | JR       |   2.50 |   2.70 |
+| FIN      | SR       |   3.20 |   3.20 |
+| IS       | FR       |   3.00 |   3.00 |
+| IS       | JR       |   3.60 |   3.60 |
+| IS       | SO       |   3.80 |   3.80 |
+| IS       | SR       |   2.20 |   4.00 |
++----------+----------+--------+--------+
+8 rows in set (0.00 sec)
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+SELECT crsDesc, count(OfferNo) FROM course JOIN offering ON course.CourseNo=offering.CourseNo WHERE course.CourseNo LIKE "IS%" GROUP BY crsDesc;
++--------------------------------------+----------------+
+| crsDesc                              | count(OfferNo) |
++--------------------------------------+----------------+
+| FUNDAMENTALS OF BUSINESS PROGRAMMING |              6 |
+| FUNDAMENTALS OF DATABASE MANAGEMENT  |              2 |
+| SYSTEMS ANALYSIS                     |              2 |
++--------------------------------------+----------------+
+3 rows in set (0.00 sec)
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+SELECT stdGPA, concat(stdFirstName," ",stdLastName) as Name, stdCity, stdState FROM student WHERE stdClass="JR" ORDER BY stdGPA;
++--------+-----------------+---------+----------+
+| stdGPA | Name            | stdCity | stdState |
++--------+-----------------+---------+----------+
+|   2.50 | ROBERTO MORALES | SEATTLE | WA       |
+|   2.70 | BOB NORBERT     | BOTHELL | WA       |
+|   3.50 | CANDY KENDALL   | TACOMA  | WA       |
+|   3.60 | MARIAH DODGE    | SEATTLE | WA       |
++--------+-----------------+---------+----------+
+4 rows in set (0.00 sec)
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+SELECT DISTINCT concat(FacCity,"-",FacState) FROM faculty;
++------------------------------+
+| concat(FacCity,"-",FacState) |
++------------------------------+
+| SEATTLE-WA                   |
+| BOTHELL-WA                   |
+| BELLEVUE-WA                  |
++------------------------------+
+3 rows in set (0.00 sec)
+
+---------------------------------------------------------------------------------------------------------------------------------
+
+SELECT concat(stdFirstName," ",stdLastName) as Name, OfferNo, EnrGrade FROM student JOIN enrollment ON student.StdSSN=enrollment.StdSSN WHERE EnrGrade >=3.5;
++-----------------+---------+----------+
+| Name            | OfferNo | EnrGrade |
++-----------------+---------+----------+
+| CANDY KENDALL   |    1234 |     3.50 |
+| MARIAH DODGE    |    1234 |     3.80 |
+| HOMER WELLS     |    4321 |     3.50 |
+| ROBERTO MORALES |    4321 |     3.50 |
+| BOB NORBERT     |    5679 |     3.70 |
+| ROBERTO MORALES |    5679 |     3.80 |
+| MARIAH DODGE    |    6666 |     3.60 |
+| LUKE BRAZZI     |    7777 |     3.70 |
+| BOB NORBERT     |    9876 |     3.50 |
+| WILLIAM PILGRIM |    9876 |     4.00 |
++-----------------+---------+----------+
+10 rows in set (0.00 sec)
+
+-------------------------------------------------------------------------------------------------------------------------------------------------
+
+SELECT DISTINCT concat(stdFirstName," ",stdLastName) as Name FROM student JOIN enrollment ON student.StdSSN=enrollment.StdSSN WHERE EnrGrade >=3.5;
++-----------------+
+| Name            |
++-----------------+
+| CANDY KENDALL   |
+| MARIAH DODGE    |
+| HOMER WELLS     |
+| ROBERTO MORALES |
+| BOB NORBERT     |
+| LUKE BRAZZI     |
+| WILLIAM PILGRIM |
++-----------------+
+7 rows in set (0.00 sec)
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+SELECT CourseNo, OffLocation, OffDays, OffTime FROM student JOIN enrollment ON student.StdSSN=enrollment.StdSSN JOIN offering ON offering.OfferNo=enrollment.OfferNo WHERE stdFirstName="BOB" AND stdLastName="NORBERT" ORDER BY OffDays, OffTime;
++----------+-------------+---------+----------+
+| CourseNo | OffLocation | OffDays | OffTime  |
++----------+-------------+---------+----------+
+| FIN300   | BLM207      | MW      | 08:30:00 |
+| IS460    | BLM307      | TTH     | 13:30:00 |
+| IS480    | BLM412      | TTH     | 15:30:00 |
+| IS320    | BLM214      | TTH     | 15:30:00 |
++----------+-------------+---------+----------+
+4 rows in set (0.00 sec)
+
+
+
+
+
+
+
+
+
+
+
+
+

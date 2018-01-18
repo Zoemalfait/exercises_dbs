@@ -96,8 +96,16 @@ SELECT sum(price) as total_revenue FROM room GROUP BY type HAVING type="double";
 
 ----------------------------------------------------------------------------------------------------------
 
-SELECT DISTINCT guestno, datefrom, dateto FROM booking WHERE datefrom BETWEEN '2004-08-01' AND '2004-08-31' OR dateto BETWEEN '2004-08-01' AND '2004-08-31';
-Empty set (0.00 sec)
+SELECT DISTINCT guestno, datefrom, dateto FROM booking WHERE '2004-08-01' BETWEEN datefrom AND dateto;
++---------+------------+------------+
+| guestno | datefrom   | dateto     |
++---------+------------+------------+
+|   10003 | 2004-04-05 | 2010-04-04 |
+|   10005 | 2004-05-12 | 2030-05-04 |
++---------+------------+------------+
+2 rows in set (0.00 sec)
+
+--> IS FOUT, NOG DENKEN
 
 ----------------------------------------------------------------------------------------------------------
 
