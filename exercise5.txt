@@ -1,0 +1,239 @@
+[guest@howest ~]$ cd exercises_dbs/
+[guest@howest exercises_dbs]$ mysql
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 3
+Server version: 5.7.20 MySQL Community Server (GPL)
+
+Copyright (c) 2000, 2017, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> CREATE database vacantion;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> exit
+Bye
+[guest@howest exercises_dbs]$ mysql vacantion <vacation.sql 
+[guest@howest exercises_dbs]$ mysql -u root -p
+Enter password: 
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 5
+Server version: 5.7.20 MySQL Community Server (GPL)
+
+Copyright (c) 2000, 2017, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> GRANT all ON vacation.* TO guest@localhost;
+Query OK, 0 rows affected (0.00 sec)
+
+exit
+[guest@howest exercises_dbs]$mysql
+---------------------------------------------------------------------------------------------------------
+
+SELECT guestname as name, guestaddress as address FROM guest WHERE guestaddress LIKE "%London" ORDER BY name;
++--------------+--------------------+
+| name         | address            |
++--------------+--------------------+
+| John Kay     | 56 High St, London |
+| Mike Ritchie | 18 Tain St, London |
++--------------+--------------------+
+2 rows in set (0.00 sec)
+
+----------------------------------------------------------------------------------------------------------
+
+SELECT * FROM room WHERE price<40.00 AND (type="double" OR type="family") ORDER BY price;
++--------+---------+--------+-------+
+| roomno | hotelno | type   | price |
++--------+---------+--------+-------+
+|    801 | ch02    | double | 15.00 |
+|    601 | fb01    | double | 29.00 |
+|   1001 | dc01    | double | 30.00 |
+|   1101 | dc01    | family | 35.00 |
+|    701 | fb01    | family | 39.00 |
++--------+---------+--------+-------+
+5 rows in set (0.00 sec)
+
+-----------------------------------------------------------------------------------------------------------
+
+SELECT * FROM booking WHERE dateto is NULL;
++---------+---------+------------+--------+--------+
+| hotelno | guestno | datefrom   | dateto | roomno |
++---------+---------+------------+--------+--------+
+| ch01    |   10006 | 2004-04-21 | NULL   |   1101 |
+| dc01    |   10003 | 2004-05-20 | NULL   |   1001 |
+| fb01    |   10001 | 2004-05-01 | NULL   |    701 |
++---------+---------+------------+--------+--------+
+3 rows in set (0.00 sec)
+
+----------------------------------------------------------------------------------------------------------
+
+SELECT avg(price) as average_price FROM room;
++---------------+
+| average_price |
++---------------+
+|     35.748333 |
++---------------+
+1 row in set (0.00 sec)
+
+----------------------------------------------------------------------------------------------------------
+
+SELECT sum(price) as total_revenue FROM room GROUP BY type HAVING type="double";
++---------------+
+| total_revenue |
++---------------+
+|        160.00 |
++---------------+
+1 row in set (0.01 sec)
+
+----------------------------------------------------------------------------------------------------------
+
+SELECT DISTINCT guestno, datefrom, dateto FROM booking WHERE datefrom BETWEEN '2004-08-01' AND '2004-08-31' OR dateto BETWEEN '2004-08-01' AND '2004-08-31';
+Empty set (0.00 sec)
+
+----------------------------------------------------------------------------------------------------------
+
+SELECT price, type FROM room JOIN hotel ON room.hotelno=hotel.hotelno WHERE hotel.hotelname="The Tower Hotel";
++-------+--------+
+| price | type   |
++-------+--------+
+| 19.00 | single |
+| 29.00 | double |
+| 39.00 | family |
++-------+--------+
+3 rows in set (0.00 sec)
+
+-----------------------------------------------------------------------------------------------------------
+
+SELECT DISTINCT guestname FROM guest JOIN booking ON booking.guestno=guest.guestno JOIN hotel ON hotel.hotelno=book
++--------------+
+| guestname    |
++--------------+
+| John Kay     |
+| Mike Ritchie |
+| Joe Keogh    |
+| Carol Farrel |
++--------------+
+4 rows in set (0.00 sec)
+
+-------------------------------------------------------------------------------------------------------
+
+SELECT DISTINCT room.*, guest.guestname FROM room JOIN hotel ON room.hotelno=hotel.hotelno JOIN booking ON booking.hotelno=hotel.hotelno JOIN guest ON guest.guestno=booking.guestno WHERE hotelname="The Tower Hotel";
++--------+---------+--------+-------+--------------+
+| roomno | hotelno | type   | price | guestname    |
++--------+---------+--------+-------+--------------+
+|    501 | fb01    | single | 19.00 | John Kay     |
+|    501 | fb01    | single | 19.00 | Mike Ritchie |
+|    501 | fb01    | single | 19.00 | Joe Keogh    |
+|    501 | fb01    | single | 19.00 | Carol Farrel |
+|    601 | fb01    | double | 29.00 | John Kay     |
+|    601 | fb01    | double | 29.00 | Mike Ritchie |
+|    601 | fb01    | double | 29.00 | Joe Keogh    |
+|    601 | fb01    | double | 29.00 | Carol Farrel |
+|    701 | fb01    | family | 39.00 | John Kay     |
+|    701 | fb01    | family | 39.00 | Mike Ritchie |
+|    701 | fb01    | family | 39.00 | Joe Keogh    |
+|    701 | fb01    | family | 39.00 | Carol Farrel |
++--------+---------+--------+-------+--------------+
+12 rows in set (0.00 sec)
+
+------------------------------------------------------------------------------------------------------------
+
+SELECT sum(price) as total_income FROM room JOIN booking ON booking.hotelno=room.hotelno AND booking.roomno=room.roomno JOIN hotel ON hotel.hotelno=booking.hotelno WHERE hotelname="The Tower Hotel" AND CURDATE() BETWEEN datefrom AND dateto;
++--------------+
+| total_income |
++--------------+
+|         NULL |
++--------------+
+1 row in set (0.00 sec)
+
+-------------------------------------------------------------------------------------------------
+
+SELECT * FROM room JOIN booking ON booking.hotelno=room.hotelno JOIN hotel ON hotel.hotelno=booking.hotelno WHERE CURDATE() BETWEEN datefrom AND dateto AND hotelname="The Tower Hotel";
+Empty set (0.00 sec)
+
+--------------------------------------------------------------------------------------------------
+
+SELECT sum(price) FROM room JOIN booking ON booking.hotelno=room.hotelno JOIN hotel ON hotel.hotelno=booking.hotelno WHERE CURDATE() BETWEEN datefrom AND dateto AND hotelname="The Tower Hotel";
++------------+
+| sum(price) |
++------------+
+|       NULL |
++------------+
+1 row in set (0.00 sec)
+
+
+----------------------------------------------------------------------------------------
+
+mysql> SELECT hotelname, count(*) from room JOIN hotel ON room.hotelno=hotel.hotelno GROUP BY hotelname;
++-----------------+----------+
+| hotelname       | count(*) |
++-----------------+----------+
+| Latham          |        3 |
+| Omni Shoreham   |        2 |
+| Phoenix Park    |        2 |
+| The Tower Hotel |        3 |
+| Watergate       |        2 |
++-----------------+----------+
+5 rows in set (0.00 sec)
+
+--------------------------------------------------------------------------------------------------------------
+
+SELECT count(*), type FROM booking JOIN room on booking.roomno=room.roomno AND booking.hotelno=room.hotelno GROUP BY type;
++----------+--------+
+| count(*) | type   |
++----------+--------+
+|        6 | double |
+|        2 | family |
+|        3 | single |
++----------+--------+
+3 rows in set (0.00 sec)
+
+--------------------------------------------------------------------------------------------------
+
+SELECT type FROM booking JOIN room on booking.roomno=room.roomno AND booking.hotelno=room.hotelno GROUP BY type ORDER BY count(*) DESC LIMIT 1;
++--------+
+| type   |
++--------+
+| double |
++--------+
+1 row in set (0.00 sec)
+
+-----------------------------------------------------------------------------------------------
+
+UPDATE room SET price = price * 1.05;
+Query OK, 12 rows affected, 2 warnings (0.01 sec)
+Rows matched: 12  Changed: 12  Warnings: 2
+
+mysql> SELECT price FROM room;
++-------+
+| price |
++-------+
+| 19.95 |
+| 30.45 |
+| 10.50 |
+| 40.95 |
+| 15.75 |
+| 18.90 |
+| 31.49 |
+| 31.50 |
+| 60.90 |
+| 62.99 |
+| 36.75 |
+| 90.30 |
++-------+
+12 rows in set (0.00 sec)
+
+
+
+
+
+
