@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS `exercise4`.`Doctor` (
   `Date_of_birth` DATE NULL,
   `Address` VARCHAR(150) NULL,
   `Phone_number` VARCHAR(45) NULL,
-  `Salary` INT NULL,
+  `Salary` DECIMAL(20,2) NULL,
   PRIMARY KEY (`idDoctor`))
 ENGINE = InnoDB;
 
@@ -32,10 +32,8 @@ ENGINE = InnoDB;
 -- Table `exercise4`.`Medical`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `exercise4`.`Medical` (
-  `idMedical` INT NOT NULL,
   `Overtime_rate` DECIMAL NULL,
   `idDoctor` INT NULL,
-  PRIMARY KEY (`idMedical`),
   INDEX `idDoctor_idx` (`idDoctor` ASC),
   CONSTRAINT `idDoctor`
     FOREIGN KEY (`idDoctor`)
@@ -49,10 +47,8 @@ ENGINE = InnoDB;
 -- Table `exercise4`.`Specialist`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `exercise4`.`Specialist` (
-  `idSpecialist` INT NOT NULL,
   `Field_area` VARCHAR(45) NULL,
   `idDoctor` INT NULL,
-  PRIMARY KEY (`idSpecialist`),
   INDEX `idDoctor_idx` (`idDoctor` ASC),
   CONSTRAINT `idDoctor`
     FOREIGN KEY (`idDoctor`)
@@ -107,18 +103,8 @@ CREATE TABLE IF NOT EXISTS `exercise4`.`Payment` (
   `idPayment` INT NOT NULL,
   `Details` VARCHAR(155) NULL,
   `Method` VARCHAR(45) NULL,
-  PRIMARY KEY (`idPayment`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `exercise4`.`Bill`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `exercise4`.`Bill` (
-  `idBill` INT NOT NULL,
-  `Total` VARCHAR(45) NULL,
   `idPatiënt` INT NULL,
-  PRIMARY KEY (`idBill`),
+  PRIMARY KEY (`idPayment`),
   INDEX `idPatiënt_idx` (`idPatiënt` ASC),
   CONSTRAINT `idPatiënt`
     FOREIGN KEY (`idPatiënt`)
@@ -129,13 +115,28 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `exercise4`.`Bill`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `exercise4`.`Bill` (
+  `idBill` INT NOT NULL,
+  `Total` VARCHAR(45) NULL,
+  `idDoctor` INT NULL,
+  PRIMARY KEY (`idBill`),
+  INDEX `idDoctor_idx` (`idDoctor` ASC),
+  CONSTRAINT `idDoctor`
+    FOREIGN KEY (`idDoctor`)
+    REFERENCES `exercise4`.`Doctor` (`idDoctor`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `exercise4`.`Paymentbill`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `exercise4`.`Paymentbill` (
-  `idPaymentbill` INT NOT NULL,
   `idPayment` INT NULL,
   `idBill` INT NULL,
-  PRIMARY KEY (`idPaymentbill`),
   INDEX `idPayment_idx` (`idPayment` ASC),
   INDEX `idBill_idx` (`idBill` ASC),
   CONSTRAINT `idPayment`
