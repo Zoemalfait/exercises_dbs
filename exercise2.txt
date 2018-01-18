@@ -1,0 +1,17 @@
+UNF	app(stafNo, DentistName, patientNo, PatientName, (appDate, appTime), SurgeryNo)
+
+1NF	pat(stafNo, DenstistName, patientNo, PatientName, SurgeryNo)
+		app(patientNo, appDate, appTime)
+		
+2NF	pat(patiendNo, PatientName, SurgeryNo, stafNo)
+		Den(stafNo, DentistName)
+		app(patientNo, appDate, appTime)
+		
+3NF	pat(patiendNo, PatientName, SurgeryNo, stafNo)
+		Den(stafNo, DentistName)
+		app(patientNo, appDate, appTime)
+		
+BCNF	pat(patiendNo, PatientName)
+		surg(patientNo, SurgeryNo, StafNo)
+		Den(stafNo, DentistName)
+		app(appNo, appDate, appTime)
