@@ -1,0 +1,24 @@
+UNF	form(PatientNo, Full name, WardNo, Ward Name, DrugNo, DrugName, DrugDesc, DrugDosage, DrugMethod, Startdate, Finishdate, Units)
+
+1NF	pat(PatientNo, Full name, WardNo, Ward Name)
+		drug(DrugNo, DrugName, DrugDesc, DrugDosage, DrugMethod, Startdate, Finishdate, Units)
+	
+	-->repeating groups weg
+		
+2NF	pat(PatientNo, Full name)
+		ward(WardNo, Ward Name)
+		drug(DrugNo, DrugName, DrugDesc, DrugDosage, DrugMethod)
+		time(DrugNo_Startdate_patienNo, Finishdate, Units)
+		
+	--> niets afhankelijk van niet key
+	
+3NF	pat(PatientNo, Full name)
+		ward(WardNo, Ward Name)
+		drug(DrugNo, DrugName, DrugDesc, DrugDosage, DrugMethod)
+		time(DrugNo_Startdate_patienNo, Finishdate, Units)
+		
+BCNF 	pat(PatientNo, Full name)
+		ward(WardNo, Ward Name)
+		drug(DrugNo, DrugName, DrugDesc, DrugDosage, DrugMethod)
+		drugstart(Startdate, DrugNo, PatientNo)
+		posologie(Startdate, Finishdate, Units)
