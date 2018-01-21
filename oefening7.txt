@@ -39,8 +39,130 @@ db.restaurants.find({"grades.score":{$gt: 90}}, {"grades.score":1});
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 
-db.restaurants.find({"cuisine":{$ne:"American "}, "grades.score":{$gt:90}},{"cuisine":1, "grades.score":1});
-{ "_id" : ObjectId("5a60c73386503980e9c3e89a"), "cuisine" : "Indian", "grades" : [ { "score" : 5 }, { "score" : 8 }, { "score" : 12 }, { "score" : 2 }, { "score" : 9 }, { "score" : 92 }, { "score" : 41 } ] }
-{ "_id" : ObjectId("5a60c73386503980e9c3ea00"), "cuisine" : "Pizza/Italian", "grades" : [ { "score" : 31 }, { "score" : 98 }, { "score" : 32 }, { "score" : 21 }, { "score" : 11 } ] }
+db.restaurants.find({"cuisine":{$ne:"American "}, "grades.score":{$gt:70}, "address.coord.0":{$lt:-65.754168}},{"cuisine":1, "grades.score":1, "address.coord":1});
+{ "_id" : ObjectId("5a60c73386503980e9c3e89a"), "address" : { "coord" : [ -73.9864626, 40.7266739 ] }, "cuisine" : "Indian", "grades" : [ { "score" : 5 }, { "score" : 8 }, { "score" : 12 }, { "score" : 2 }, { "score" : 9 }, { "score" : 92 }, { "score" : 41 } ] }
+{ "_id" : ObjectId("5a60c73386503980e9c3ea00"), "address" : { "coord" : [ -73.984758, 40.7457939 ] }, "cuisine" : "Pizza/Italian", "grades" : [ { "score" : 31 }, { "score" : 98 }, { "score" : 32 }, { "score" : 21 }, { "score" : 11 } ] }
+{ "_id" : ObjectId("5a60c73386503980e9c3ea08"), "address" : { "coord" : [ -73.9243061, 40.8276297 ] }, "cuisine" : "Latin (Cuban, Dominican, Puerto Rican, South & Central American)", "grades" : [ { "score" : 10 }, { "score" : 6 }, { "score" : 25 }, { "score" : 12 }, { "score" : 12 }, { "score" : 14 }, { "score" : 26 }, { "score" : 76 } ] }
+{ "_id" : ObjectId("5a60c73386503980e9c3eb59"), "address" : { "coord" : [ -73.94610279999999, 40.7137587 ] }, "cuisine" : "Bakery", "grades" : [ { "score" : 10 }, { "score" : 10 }, { "score" : 13 }, { "score" : 18 }, { "score" : 9 }, { "score" : 8 }, { "score" : 77 } ] }
+{ "_id" : ObjectId("5a60c73386503980e9c3f186"), "address" : { "coord" : [ -73.9772294, 40.7527262 ] }, "cuisine" : "Italian", "grades" : [ { "score" : 20 }, { "score" : 14 }, { "score" : 13 }, { "score" : 76 }, { "score" : 12 } ] }
+
+-------------------------------------------------------------------------------------------------------------------------------------------------
+
+db.restaurants.find({"cuisine":{$in:["American ","Chinese"]}, "borough":"Bronx"},{"cuisine":1,"borough":1});
+{ "_id" : ObjectId("5a60c73386503980e9c3e6a5"), "borough" : "Bronx", "cuisine" : "American " }
+{ "_id" : ObjectId("5a60c73386503980e9c3e6be"), "borough" : "Bronx", "cuisine" : "Chinese" }
+{ "_id" : ObjectId("5a60c73386503980e9c3e6d1"), "borough" : "Bronx", "cuisine" : "Chinese" }
+{ "_id" : ObjectId("5a60c73386503980e9c3e6d9"), "borough" : "Bronx", "cuisine" : "American " }
+{ "_id" : ObjectId("5a60c73386503980e9c3e6f0"), "borough" : "Bronx", "cuisine" : "American " }
+{ "_id" : ObjectId("5a60c73386503980e9c3e709"), "borough" : "Bronx", "cuisine" : "American " }
+{ "_id" : ObjectId("5a60c73386503980e9c3e734"), "borough" : "Bronx", "cuisine" : "American " }
+{ "_id" : ObjectId("5a60c73386503980e9c3e740"), "borough" : "Bronx", "cuisine" : "American " }
+{ "_id" : ObjectId("5a60c73386503980e9c3e74f"), "borough" : "Bronx", "cuisine" : "American " }
+{ "_id" : ObjectId("5a60c73386503980e9c3e775"), "borough" : "Bronx", "cuisine" : "American " }
+{ "_id" : ObjectId("5a60c73386503980e9c3e776"), "borough" : "Bronx", "cuisine" : "American " }
+{ "_id" : ObjectId("5a60c73386503980e9c3e77a"), "borough" : "Bronx", "cuisine" : "American " }
+{ "_id" : ObjectId("5a60c73386503980e9c3e796"), "borough" : "Bronx", "cuisine" : "American " }
+{ "_id" : ObjectId("5a60c73386503980e9c3e7a9"), "borough" : "Bronx", "cuisine" : "American " }
+{ "_id" : ObjectId("5a60c73386503980e9c3e7bb"), "borough" : "Bronx", "cuisine" : "American " }
+{ "_id" : ObjectId("5a60c73386503980e9c3e7cf"), "borough" : "Bronx", "cuisine" : "American " }
+{ "_id" : ObjectId("5a60c73386503980e9c3e822"), "borough" : "Bronx", "cuisine" : "American " }
+{ "_id" : ObjectId("5a60c73386503980e9c3e88a"), "borough" : "Bronx", "cuisine" : "American " }
+{ "_id" : ObjectId("5a60c73386503980e9c3e8af"), "borough" : "Bronx", "cuisine" : "American " }
+{ "_id" : ObjectId("5a60c73386503980e9c3e8ca"), "borough" : "Bronx", "cuisine" : "American " }
+Type "it" for more
+
+----------------------------------------------------------------------------------------------------------------------------------------------
+
+db.restaurants.find({"borough":{$nin:["Bronx", "Brooklyn","Queens","Staten Island"]}},{"_id":1,"name":1,"cuisine":1});
+{ "_id" : ObjectId("5a60c73386503980e9c3e69d"), "cuisine" : "Irish", "name" : "Dj Reynolds Pub And Restaurant" }
+{ "_id" : ObjectId("5a60c73386503980e9c3e6a8"), "cuisine" : "American ", "name" : "1 East 66Th Street Kitchen" }
+{ "_id" : ObjectId("5a60c73386503980e9c3e6ad"), "cuisine" : "American ", "name" : "Glorious Food" }
+{ "_id" : ObjectId("5a60c73386503980e9c3e6b0"), "cuisine" : "Delicatessen", "name" : "Bully'S Deli" }
+{ "_id" : ObjectId("5a60c73386503980e9c3e6b2"), "cuisine" : "Chicken", "name" : "Harriet'S Kitchen" }
+{ "_id" : ObjectId("5a60c73386503980e9c3e6b3"), "cuisine" : "American ", "name" : "P & S Deli Grocery" }
+{ "_id" : ObjectId("5a60c73386503980e9c3e6b5"), "cuisine" : "American ", "name" : "Angelika Film Center" }
+{ "_id" : ObjectId("5a60c73386503980e9c3e6b7"), "cuisine" : "Turkish", "name" : "The Country Cafe" }
+{ "_id" : ObjectId("5a60c73386503980e9c3e6bd"), "cuisine" : "Bakery", "name" : "Olive'S" }
+{ "_id" : ObjectId("5a60c73386503980e9c3e6bf"), "cuisine" : "American ", "name" : "Cafe Metro" }
+{ "_id" : ObjectId("5a60c73386503980e9c3e6c1"), "cuisine" : "Sandwiches/Salads/Mixed Buffet", "name" : "Lexler Deli" }
+{ "_id" : ObjectId("5a60c73386503980e9c3e6c5"), "cuisine" : "Continental", "name" : "Lorenzo & Maria'S" }
+{ "_id" : ObjectId("5a60c73386503980e9c3e6c6"), "cuisine" : "Pizza", "name" : "Domino'S Pizza" }
+{ "_id" : ObjectId("5a60c73386503980e9c3e6c7"), "cuisine" : "American ", "name" : "Berkely" }
+{ "_id" : ObjectId("5a60c73386503980e9c3e6ca"), "cuisine" : "American ", "name" : "Downtown Deli" }
+{ "_id" : ObjectId("5a60c73386503980e9c3e6cc"), "cuisine" : "Pizza", "name" : "Domino'S Pizza" }
+{ "_id" : ObjectId("5a60c73386503980e9c3e6cd"), "cuisine" : "American ", "name" : "Spoon Bread Catering" }
+{ "_id" : ObjectId("5a60c73386503980e9c3e6d3"), "cuisine" : "Chicken", "name" : "Texas Rotisserie" }
+{ "_id" : ObjectId("5a60c73386503980e9c3e6d6"), "cuisine" : "American ", "name" : "Metropolitan Club" }
+{ "_id" : ObjectId("5a60c73386503980e9c3e6d7"), "cuisine" : "American ", "name" : "Palm Restaurant" }
+Type "it" for more
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+db.restaurants.find({"grades.score":{$lt:10}},{"_id":1,"name":1,"borough":1,"cuisine":1});
+{ "_id" : ObjectId("5a60c73386503980e9c3e69d"), "borough" : "Manhattan", "cuisine" : "Irish", "name" : "Dj Reynolds Pub And Restaurant" }
+{ "_id" : ObjectId("5a60c73386503980e9c3e69e"), "borough" : "Brooklyn", "cuisine" : "Hamburgers", "name" : "Wendy'S" }
+{ "_id" : ObjectId("5a60c73386503980e9c3e69f"), "borough" : "Brooklyn", "cuisine" : "American ", "name" : "Riviera Caterer" }
+{ "_id" : ObjectId("5a60c73386503980e9c3e6a0"), "borough" : "Bronx", "cuisine" : "Bakery", "name" : "Morris Park Bake Shop" }
+{ "_id" : ObjectId("5a60c73386503980e9c3e6a2"), "borough" : "Brooklyn", "cuisine" : "Delicatessen", "name" : "Wilken'S Fine Food" }
+{ "_id" : ObjectId("5a60c73386503980e9c3e6a3"), "borough" : "Brooklyn", "cuisine" : "American ", "name" : "Regina Caterers" }
+{ "_id" : ObjectId("5a60c73386503980e9c3e6a4"), "borough" : "Brooklyn", "cuisine" : "Ice Cream, Gelato, Yogurt, Ices", "name" : "Taste The Tropics Ice Cream" }
+{ "_id" : ObjectId("5a60c73386503980e9c3e6a5"), "borough" : "Bronx", "cuisine" : "American ", "name" : "Wild Asia" }
+{ "_id" : ObjectId("5a60c73386503980e9c3e6a6"), "borough" : "Brooklyn", "cuisine" : "American ", "name" : "C & C Catering Service" }
+{ "_id" : ObjectId("5a60c73386503980e9c3e6a7"), "borough" : "Brooklyn", "cuisine" : "Chinese", "name" : "May May Kitchen" }
+{ "_id" : ObjectId("5a60c73386503980e9c3e6a8"), "borough" : "Manhattan", "cuisine" : "American ", "name" : "1 East 66Th Street Kitchen" }
+{ "_id" : ObjectId("5a60c73386503980e9c3e6a9"), "borough" : "Brooklyn", "cuisine" : "Jewish/Kosher", "name" : "Seuda Foods" }
+{ "_id" : ObjectId("5a60c73386503980e9c3e6aa"), "borough" : "Brooklyn", "cuisine" : "Ice Cream, Gelato, Yogurt, Ices", "name" : "Carvel Ice Cream" }
+{ "_id" : ObjectId("5a60c73386503980e9c3e6ab"), "borough" : "Queens", "cuisine" : "Ice Cream, Gelato, Yogurt, Ices", "name" : "Carvel Ice Cream" }
+{ "_id" : ObjectId("5a60c73386503980e9c3e6ac"), "borough" : "Brooklyn", "cuisine" : "Delicatessen", "name" : "Nordic Delicacies" }
+{ "_id" : ObjectId("5a60c73386503980e9c3e6ad"), "borough" : "Manhattan", "cuisine" : "American ", "name" : "Glorious Food" }
+{ "_id" : ObjectId("5a60c73386503980e9c3e6ae"), "borough" : "Brooklyn", "cuisine" : "American ", "name" : "The Movable Feast" }
+{ "_id" : ObjectId("5a60c73386503980e9c3e6af"), "borough" : "Queens", "cuisine" : "Delicatessen", "name" : "Sal'S Deli" }
+{ "_id" : ObjectId("5a60c73386503980e9c3e6b0"), "borough" : "Manhattan", "cuisine" : "Delicatessen", "name" : "Bully'S Deli" }
+{ "_id" : ObjectId("5a60c73386503980e9c3e6b1"), "borough" : "Queens", "cuisine" : "Delicatessen", "name" : "Steve Chu'S Deli & Grocery" }
+Type "it" for more
+
+------------------------------------------------------------------------------------------------------------------------------------------------
+
+db.restaurants.find({$and:[{"grades.grade":"A"},{"grades.score":11}, {"grades.date":ISODate("2014-08-11T00:00:00Z")}]},{"_id":1,"name":1,"borough":1});
+{ "_id" : ObjectId("5a60c73386503980e9c3e71a"), "borough" : "Manhattan", "name" : "Neary'S Pub" }
+{ "_id" : ObjectId("5a60c73386503980e9c3e7f7"), "borough" : "Manhattan", "name" : "Don Filippo Restaurant" }
+{ "_id" : ObjectId("5a60c73386503980e9c3eabd"), "borough" : "Manhattan", "name" : "Mustang Sally'S Restaurant" }
+{ "_id" : ObjectId("5a60c73386503980e9c3ecc8"), "borough" : "Manhattan", "name" : "Club Macanudo (Cigar Bar)" }
+{ "_id" : ObjectId("5a60c73386503980e9c3edbe"), "borough" : "Queens", "name" : "Marino'S Pizza & Restaurant" }
+{ "_id" : ObjectId("5a60c73386503980e9c3ef66"), "borough" : "Manhattan", "name" : "Gene'S Coffee Shop" }
+{ "_id" : ObjectId("5a60c73386503980e9c3f0d3"), "borough" : "Brooklyn", "name" : "Union Cafe Restaurant" }
+{ "_id" : ObjectId("5a60c73386503980e9c3f543"), "borough" : "Brooklyn", "name" : "Jojo'S Pizza" }
+
+------------------------------------------------------------------------------------------------------------------------------------------------
+
+> db.restaurants.find({},{"cuisine":1,"borough":1}).sort({"cuisine":1},{"borough":-1});
+{ "_id" : ObjectId("5a60c73386503980e9c3ed88"), "borough" : "Manhattan", "cuisine" : "Afghan" }
+{ "_id" : ObjectId("5a60c73386503980e9c3eeb5"), "borough" : "Manhattan", "cuisine" : "Afghan" }
+{ "_id" : ObjectId("5a60c73386503980e9c3ef6c"), "borough" : "Manhattan", "cuisine" : "Afghan" }
+{ "_id" : ObjectId("5a60c73386503980e9c3f492"), "borough" : "Manhattan", "cuisine" : "Afghan" }
+{ "_id" : ObjectId("5a60c73386503980e9c3e773"), "borough" : "Bronx", "cuisine" : "African" }
+{ "_id" : ObjectId("5a60c73386503980e9c3f08f"), "borough" : "Brooklyn", "cuisine" : "African" }
+{ "_id" : ObjectId("5a60c73386503980e9c3f306"), "borough" : "Queens", "cuisine" : "African" }
+{ "_id" : ObjectId("5a60c73386503980e9c3f3bf"), "borough" : "Bronx", "cuisine" : "African" }
+{ "_id" : ObjectId("5a60c73386503980e9c3e69f"), "borough" : "Brooklyn", "cuisine" : "American " }
+{ "_id" : ObjectId("5a60c73386503980e9c3e6a3"), "borough" : "Brooklyn", "cuisine" : "American " }
+{ "_id" : ObjectId("5a60c73386503980e9c3e6a5"), "borough" : "Bronx", "cuisine" : "American " }
+{ "_id" : ObjectId("5a60c73386503980e9c3e6a6"), "borough" : "Brooklyn", "cuisine" : "American " }
+{ "_id" : ObjectId("5a60c73386503980e9c3e6a8"), "borough" : "Manhattan", "cuisine" : "American " }
+{ "_id" : ObjectId("5a60c73386503980e9c3e6ad"), "borough" : "Manhattan", "cuisine" : "American " }
+{ "_id" : ObjectId("5a60c73386503980e9c3e6ae"), "borough" : "Brooklyn", "cuisine" : "American " }
+{ "_id" : ObjectId("5a60c73386503980e9c3e6b3"), "borough" : "Manhattan", "cuisine" : "American " }
+{ "_id" : ObjectId("5a60c73386503980e9c3e6b5"), "borough" : "Manhattan", "cuisine" : "American " }
+{ "_id" : ObjectId("5a60c73386503980e9c3e6bc"), "borough" : "Brooklyn", "cuisine" : "American " }
+{ "_id" : ObjectId("5a60c73386503980e9c3e6bf"), "borough" : "Manhattan", "cuisine" : "American " }
+{ "_id" : ObjectId("5a60c73386503980e9c3e6c4"), "borough" : "Queens", "cuisine" : "American " }
+Type "it" for more
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+>db.restaurants.count({"address.street":{$exists: false}},{"address":1});
+0
+
+-->They all have a street
 
 
